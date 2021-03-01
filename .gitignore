@@ -1,3 +1,5 @@
 
 *.jpg
 .ipynb_checkpoints/app-checkpoint.ipynb
+*.csv
+face_enc
