@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+	<title>Webcam</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='cam.css')}}"/>
+</head>
+<body>
+<div class="contentarea">
+  <div class="camera">
+    <video id="video">Video stream not available.</video>
+    <button id="startbutton">Capture</button>
+  </div>
+  <canvas id="canvas">
+  </canvas>
+  <div class="output">
+    <img id="photo" alt="Captured Photo">
+  </div>
+
+</div>
+<script type = "text/javascript" src = "{{ url_for('static',filename = 'cam.js') }}" ></script>
+</body>
+</html>
