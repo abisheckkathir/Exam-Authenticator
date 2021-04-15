@@ -7,16 +7,16 @@
 <body>
 <div class="contentarea">
   <div class="camera">
-    <video id="video">Video stream not available.</video>
-    <button id="startbutton">Capture</button>
+    <img src="{{ url_for('video_feed') }}" id="video"></video>
+    <form action="/capture" method="POST">
+        <button id="startbutton" type="submit" >Capture</button>
+    </form>
   </div>
   <canvas id="canvas">
+   
+    
   </canvas>
-  <div class="output">
-    <img id="photo" alt="Captured Photo">
-  </div>
 
 </div>
-<script type = "text/javascript" src = "{{ url_for('static',filename = 'cam.js') }}" ></script>
 </body>
 </html>
