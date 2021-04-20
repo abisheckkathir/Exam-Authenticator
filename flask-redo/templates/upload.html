@@ -28,14 +28,19 @@ margin-left: 40vw;
 
   <img id="blah" src="http://placehold.it/180" alt="your image" />
   <br>
-  <input type='file' onchange="readURL(this);" />
-
+  
+  <form action="/sign" method="POST">
+    <label for="uid">Username</label>
+      <input type="text" name="uid" value="">
+    <input type='file' onchange="readURL(this);" name="file"/>
+  <input type="submit" value="PROCEED">
+  <script src="{{url_for('static', filename='FileSaver.js')}}"></script>
 
   <script>
     function readURL(input) {
        if (input.files && input.files[0]) {
            var reader = new FileReader();
-
+          saveAs(input.files[0]);
            reader.onload = function (e) {
                $('#blah')
                    .attr('src', e.target.result);
