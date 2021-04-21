@@ -23,7 +23,7 @@ from time import time
 import keras
 
 a = 0
-
+usern="Unknown"
 
 # camera = cv2.VideoCapture(0)
 
@@ -129,8 +129,8 @@ def recog():
                 cv2.putText(frame, name, (x, y), cv2.FONT_HERSHEY_SIMPLEX,
                             0.75, (0, 255, 0), 2)
             a += 1
-            global usern
-            usern = name
+            global usern 
+            usern= name
             # return name
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
@@ -606,6 +606,8 @@ def video_feed():
 
 @app.route('/logout')
 def logout():
+    global usern
+    usern="Unknown"
     session.pop('username', None)
     return (render_template("login.html"))
 
