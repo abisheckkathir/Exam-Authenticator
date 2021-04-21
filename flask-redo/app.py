@@ -142,6 +142,28 @@ def recog():
     video_capture.release()
 genuine_image_paths = "Dataset/real/"
 forged_image_paths = "Dataset/forged/"
+def cap():
+    global camera
+    camera = cv2.VideoCapture(0)
+    ret, frame = video_capture.read()
+    frame = buffer.tobytes()
+    yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+def regImage(un):
+    if not(os.path.exists('Images/'+un)):
+        os.mkdir('Images/'+un)
+        # with open('users.csv', 'a+') as file:
+        #     reader = csv.reader(file)
+        #     n = str(len(list(reader))+1).zfill(3)
+        #     writer = csv.writer(file)
+        #     writer.writerow([n, un])
+        for i in range(15):
+            return_value, image = camera.read()
+            if i>4:
+                cv2.imwrite('Images/'+un+'/'+un+str(i-4)+'.png', image)
+        del(camera)
+    
 
 
 # ## Preprocessing the image
@@ -607,6 +629,10 @@ def exam():
 @app.route('/video_feed')
 def video_feed():
     return Response(recog(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/register_video_feed')
+def video_feed():
+    return Response(cap(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/register')
 def register():
