@@ -631,7 +631,7 @@ def video_feed():
     return Response(recog(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/register_video_feed')
-def video_feed():
+def register_video_feed():
     return Response(cap(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/register')
