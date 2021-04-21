@@ -28,7 +28,7 @@ usern="Unknown"
 
 # camera = cv2.VideoCapture(0)
 
-# def gen_frames():  
+# def gen_frames():
 #     while True:
 #         success, frame = camera.read()  # read the camera frame
 #         if not success:
@@ -130,7 +130,7 @@ def recog():
                 cv2.putText(frame, name, (x, y), cv2.FONT_HERSHEY_SIMPLEX,
                             0.75, (0, 255, 0), 2)
             a += 1
-            global usern 
+            global usern
             usern= name
             # return name
         ret, buffer = cv2.imencode('.jpg', frame)
@@ -604,6 +604,9 @@ def exam():
 def video_feed():
     return Response(recog(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/register')
+def register():
+    return (render_template("regi.html"))
 
 @app.route('/logout')
 def logout():
