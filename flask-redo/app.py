@@ -584,7 +584,11 @@ def capture():
 def sign():
     filename = request.form['file']
     uid = request.form['uid']
-    path="C:/Users/Sivasini/Downloads/"+filename
+    path=''
+    if(session['username']=='Siva'):
+        path="C:/Users/Sivasini/Downloads/"+filename
+    elif (session['username']=='abisheck'):
+        path="/Users/umakathir/Downloads/"+filename
     if signrecog(uid,path):
         return redirect("/exam", code=302)
     else :
@@ -601,6 +605,10 @@ def exam():
 
 
 @app.route('/video_feed')
+def video_feed():
+    return Response(recog(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/video_feed_register')
 def video_feed():
     return Response(recog(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
