@@ -9,7 +9,9 @@
 }
  body {
 	 font-family: montserrat, arial, verdana;
+   margin-top:20vh;
 }
+
  #multistepsform {
 	 width: 400px;
 	 margin: 50px auto;
@@ -21,20 +23,18 @@
   border: 1px solid black;
   box-shadow: 2px 2px 3px black;
   width:300px;
-  height:250px;
+  height:290px;
 }
- #multistepsform fieldset {
+ #multistepsform {
 	 background: white;
 	 border: 0 none;
 	 border-radius: 3px;
 	 box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
 	 padding: 20px 30px;
 	 box-sizing: border-box;
-	 width: 80%;
-	 margin: 0 10%;
 	 position: relative;
 }
- #multistepsform fieldset:not(:first-of-type) {
+ #multistepsform:not(:first-of-type) {
 	 display: none;
 }
  #multistepsform input, #multistepsform textarea {
@@ -98,7 +98,7 @@
  #multistepsform #progressbar li:before {
 	 content: counter(step);
 	 counter-increment: step;
-	 width: 20px;
+	 width: 100px;
 	 line-height: 20px;
 	 display: block;
 	 font-size: 10px;
