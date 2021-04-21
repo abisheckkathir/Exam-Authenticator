@@ -43,9 +43,12 @@ section {
 }
 
 
-form {
-    display: flex;
-    flex-wrap: wrap;
+img{
+  max-width:300px;
+}
+input{
+  padding: 10px;
+margin-left: 5vw;
 }
 
 
@@ -57,8 +60,8 @@ form {
     }
 
     .login-img {
-        background: linear-gradient(to bottom, rgba(91, 229, 185, 0.8), rgba(36, 11, 54, 0.8)),
-        url(https://130e178e8f8ba617604b-8aedd782b7d22cfe0d1146da69a52436.ssl.cf1.rackcdn.com/facial-recognition-use-triggers-gdpr-fine-showcase_image-10-a-12991.jpg);
+        background: linear-gradient(to bottom, rgba(229, 236, 84, 0.8), rgba(36, 11, 54, 0.8)),
+        url(https://www.pandasecurity.com/en/mediacenter/src/uploads/2016/10/IMG-MC-FirmaDigital-1.jpg);
         background-position: center;
         background-size: cover;
         display: flex;
@@ -115,7 +118,8 @@ form {
    cursor:pointer;
      display:block;
   position:relative;
-  bottom:80px;
+  top:90px;
+margin-left:7vw;
 }
  .fancy-button.bg-gradient1 {
 	 text-shadow: 0px 0px 1px #bf4c28;
@@ -167,5 +171,5 @@ form {
 
 .bg-gradient1 span, .bg-gradient1:before {
 	 background: #fa7e29;
-	 background: linear-gradient(180deg, #33FF9B 0%, rgba(15, 155,110, 0.81) 100%);
+	 background: linear-gradient(180deg, #B7BC54 0%, rgba(15, 155,110, 0.81) 100%);
 }

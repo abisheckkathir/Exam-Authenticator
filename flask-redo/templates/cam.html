@@ -1,21 +1,41 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-	<title>Webcam</title>
-    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='cam.css')}}"/>
-</head>
-<body>
-  <h1>Welcome,{{user}}. Please authorize your face and click capture button.</h1>
-<div class="contentarea">
-  <div class="camera">
-    <img src="{{ url_for('video_feed') }}" id="video">
-    <form action="/capture" method="POST">
-        <button id="startbutton" type="submit" >Capture</button>
-    </form>
-  </div>
-  <canvas id="canvas">
-  </canvas>
+  <head>
 
-</div>
+    	<title>Login</title>
+
+
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='cam.css')}}"/>
+  </head>
+
+<body>
+    <section>
+	<div class="login-img">
+		<h1>Welcome {{user}},</h1><br>
+         <p>Please authorize your face and click capture button. Please follow the instructions below:</p>
+        <ol><li>Make sure your whole face is visible in the frame.</li>
+        <li>If it still doesn't recognize you, make sure there is no backlight behind you.</li>
+        <li>Position yourself in such a way that the light is before you.</li>
+        <li>After you are recognized by the green frame, please click capture.</li></ol>
+        <br>
+        <p>If it still doesnt recognize you, your session will be cancelled and you will be redirected to the login page.</p>
+        </div>
+        <div class="login-form">
+            <img src="{{ url_for('video_feed') }}" id="video">
+    <form action="/capture" method="POST">
+       <!-- <button id="startbutton" type="submit" >Capture</button>-->
+  	<button class="fancy-button bg-gradient1" style="border:none; background: none;align:centre">
+		<span>Capture</span></button>
+
+
+    </form>
+        </div>
+
+    </section>
 </body>
 </html>

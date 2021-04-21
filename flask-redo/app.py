@@ -14,13 +14,14 @@ import matplotlib.image as mpimg
 import matplotlib.cm as cm
 from scipy import ndimage
 from skimage.measure import regionprops
+import pandas as pd
+from time import time
+import keras
 from skimage import io
 from skimage.filters import threshold_otsu   # For finding the threshold for grayscale to binary conversion
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
-import pandas as pd
-from time import time
-import keras
+
 
 a = 0
 usern="Unknown"
@@ -364,7 +365,7 @@ def readCSV(train_path, test_path, type2=False):
         df = pd.read_csv(test_path, usecols=(n_input,))
         temp = [elem[0] for elem in df.values]
         correct = np.array(temp)
-        corr_test = kearas.utils.to_categorical(
+        corr_test = keras.utils.to_categorical(
             correct, 2)      # Converting to one hot
     if not(type2):
         return train_input, corr_train, test_input, corr_test
@@ -583,11 +584,11 @@ def capture():
 def sign():
     filename = request.form['file']
     uid = request.form['uid']
-    path="/Users/umakathir/Downloads/"+filename
+    path="C:/Users/Sivasini/Downloads/"+filename
     if signrecog(uid,path):
         return redirect("/exam", code=302)
     else :
-        return redirect("/upload", code=302)
+        return redirect("/error", code=302)
 
 @app.route('/upload')
 def upload():
