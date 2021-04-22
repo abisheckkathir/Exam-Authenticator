@@ -9,7 +9,7 @@
   </head>
 
 <body>
-<form id="multistepsform">
+<form id="multistepsform" action="/register1_check" method="POST">
     <ul id="progressbar">
     <li class="active">Account Setup</li>
     <li>Face ID setup</li>
@@ -17,10 +17,12 @@
   </ul>
     <h2 class="fs-title">Create your account</h2>
     <h3 class="fs-subtitle"></h3>
-    <input type="text" name="email" placeholder="Username" />
+    <input type="text" name="user" placeholder="Username" />
     <input type="password" name="pass" placeholder="Password" />
     <input type="password" name="cpass" placeholder="Confirm Password" />
-  <a href='/register2'>  <input type="button" name="next" class="next action-button" value="Next" /></a>
+<br>
+    <h1>{{ info }}</h1><br>
+  <input type="submit" name="next" class="next action-button" value="Next" />
 <!--  </fieldset>
 
   <fieldset id='f1'>
