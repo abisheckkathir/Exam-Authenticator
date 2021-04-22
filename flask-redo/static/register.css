@@ -12,12 +12,17 @@
    margin-top:20vh;
 }
 
+h1{
+   color:chocolate;
+   font-size:1rem;
+   margin-top:2vh;
+}
  #multistepsform {
 	 width: 400px;
 	 margin: 50px auto;
 	 text-align: center;
 	 position: relative;
-   margin-top:10vh;
+     margin-top:10vh;
 }
 #video{
   border: 1px solid black;
