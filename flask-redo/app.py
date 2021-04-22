@@ -612,6 +612,7 @@ def sign():
     elif (session['username'] == 'abisheck'):
         path = "/Users/umakathir/Downloads/" + filename
     if signrecog(uid, path):
+        os.remove(path)
         return redirect("/exam", code=302)
     else:
         return redirect("/error", code=302)
@@ -661,6 +662,7 @@ def logout():
     global usern
     usern = "Unknown"
     session.pop('username', None)
+    session.pop('uid', None)
     return (render_template("login.html"))
 
 
