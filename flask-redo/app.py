@@ -476,7 +476,7 @@ def trainAndTest(rate=0.001, epochs=1700, neurons=7, display=False):
     return train_avg / n, test_avg / n, (time() - start) / n
 
 
-makeCSV()
+# makeCSV()
 
 
 def signrecog(uid, filename):
@@ -556,7 +556,7 @@ def signrecog(uid, filename):
     return evaluate(train_path, test_path, type2=True)
 
 
-encode()
+# encode()
 app = Flask(__name__)
 app.secret_key = 'Examination Portal'
 
@@ -576,17 +576,22 @@ database = {'Siva': '123', 'abisheck': '123'}
 def login():
     name1 = request.form['username']
     pwd = request.form['password']
-    global session
-    session['username'] = name1
-    if name1 not in database:
-        return render_template('login.html', info='Invalid User')
-    else:
-        if database[name1] != pwd:
-            return render_template('login.html', info='Invalid Password')
-        else:
-            session['uid']=str(list(database.keys()).index(name1)+1).zfill(3)
-            return redirect("/cam", code=302)
-
+    with open('users.csv', 'r+') as file:
+        reader = csv.reader(file)
+        a=0
+        for row in reader:
+            if a == 0:
+                a+=1
+                continue
+            if row[1]==name1:
+                if row[2]==pwd:
+                    global session
+                    session['username'] = name1
+                    session['uid']=row[0]
+                    return redirect("/cam", code=302)
+                else:
+                    return render_template('login.html', info='Invalid Password')
+    return render_template('login.html', info='Invalid User')
 
 @app.route('/cam')
 def cam():
@@ -603,14 +608,12 @@ def capture():
 
 @app.route('/sign', methods=['POST', 'GET'])
 def sign():
-    filename = request.form['file']
+    if request.method == 'POST':  
+        f = request.files['file']
+        f.save(os.path.join('Im/temp.png'))
+    print('saved')
     uid = session['uid']
-    path = ''
-    print(uid)
-    if (session['username'] == 'Siva'):
-        path = "C:/Users/Sivasini/Downloads/" + filename
-    elif (session['username'] == 'abisheck'):
-        path = "/Users/umakathir/Downloads/" + filename
+    path =os.path.join('Im/temp.png')
     if signrecog(uid, path):
         os.remove(path)
         return redirect("/exam", code=302)
@@ -627,6 +630,11 @@ def upload():
 def exam():
     return (render_template("exam.html", user=session['username']))
 
+@app.route('/reg_image')
+def reg_image():
+    uname=session['username']
+    regImage(uname)
+    return redirect("/register3", code=302)
 
 @app.route('/video_feed')
 def video_feed():
@@ -642,11 +650,22 @@ def register_video_feed():
 def register1():
     return (render_template("regi.html"))
 
-@app.route('/register2')
+@app.route('/register2', methods=['POST', 'GET'])
 def register2():
-    global camera
-    camera = cv2.VideoCapture(0)
-    return (render_template("regi2.html"))
+    if(request.form['pass']==request.form['cpass']):
+        global session
+        session['username']=request.form['uname']
+        session['password']=request.form['pass']
+        with open('users.csv', 'r+') as file:
+            reader = csv.reader(file)
+            n = str(len(list(reader))).zfill(3)
+            writer = csv.writer(file)
+            writer.writerow([n, session['username'],session['password']])
+        global camera
+        camera = cv2.VideoCapture(0)
+        return (render_template("regi2.html"))
+    else:
+        return redirect("/register1", code=302)
 
 @app.route('/register3')
 def register3():
@@ -663,6 +682,7 @@ def logout():
     usern = "Unknown"
     session.pop('username', None)
     session.pop('uid', None)
+    session.pop('password', None)
     return (render_template("login.html"))
 
 
@@ -677,4 +697,4 @@ def internal_error(error):
 
 
 if __name__ == '_main_':
-    app.run()
+    app.run(debug=True)

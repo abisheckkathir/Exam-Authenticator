@@ -19,12 +19,20 @@
     <h3 class="fs-subtitle">Press Capture only after your entire face is visible in the frame.</h3>
     <!--<div class="camera">
       <img src="{{ url_for('video_feed') }}" id="video">
-      <button class="fancy-button bg-gradient1" style="border:none; background: none;align:centre">
-      <span>Capture</span></button>
+      
       <form action="/capture" method="POST">-->
 
 
-    <img src="{{ url_for('register_video_feed') }}" id="video">
+    
+    <div class="login-form">
+      <img src="{{ url_for('register_video_feed') }}" id="video">
+<form action="/reg_image" method="POST">
+<button class="fancy-button bg-gradient1" style="border:none; background: none;align:centre">
+<span>Capture</span></button>
+
+
+</form>
+  </div>
 
   <a href='/register1'>  <input type="button" name="previous" class="previous action-button" value="Previous" /></a>
 

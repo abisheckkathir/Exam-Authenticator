@@ -26,7 +26,7 @@
   <img id="blah" src="http://placehold.it/180" alt="your image" />
   <br>
 
-  <form action="/sign" method="POST">
+  <form action="/sign" enctype=multipart/form-data method="POST">
       <!-- <input type="text" name="uid" value="" placeholder="Username"><br> -->
     <input type='file' onchange="readURL(this);" name="file"/>
   <!--<input type="submit" value="PROCEED">-->
@@ -37,13 +37,10 @@
 </form>
 
 </div>
-  <script src="{{url_for('static', filename='FileSaver.js')}}"></script>
-
   <script>
     function readURL(input) {
        if (input.files && input.files[0]) {
            var reader = new FileReader();
-          saveAs(input.files[0]);
            reader.onload = function (e) {
                $('#blah')
                    .attr('src', e.target.result);
