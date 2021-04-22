@@ -148,13 +148,12 @@ forged_image_paths = "Dataset/forged/"
 
 
 def cap():
-    global camera
-    camera = cv2.VideoCapture(0)
-    ret, frame = camera.read()
-    ret, buffer = cv2.imencode('.jpg', frame)
-    frame = buffer.tobytes()
-    yield (b'--frame\r\n'
-           b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+    while True:
+        ret, frame = camera.read()
+        ret, buffer = cv2.imencode('.jpg', frame)
+        frame = buffer.tobytes()
+        yield (b'--frame\r\n'
+            b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
 def regImage(un):
@@ -585,7 +584,7 @@ def login():
         if database[name1] != pwd:
             return render_template('login.html', info='Invalid Password')
         else:
-            # return render_template('cam.html',name=name1,user=session['username'])
+            session['uid']=str(list(database.keys()).index(name1)+1).zfill(3)
             return redirect("/cam", code=302)
 
 
@@ -605,8 +604,9 @@ def capture():
 @app.route('/sign', methods=['POST', 'GET'])
 def sign():
     filename = request.form['file']
-    uid = request.form['uid']
+    uid = session['uid']
     path = ''
+    print(uid)
     if (session['username'] == 'Siva'):
         path = "C:/Users/Sivasini/Downloads/" + filename
     elif (session['username'] == 'abisheck'):
@@ -643,10 +643,13 @@ def register1():
 
 @app.route('/register2')
 def register2():
+    global camera
+    camera = cv2.VideoCapture(0)
     return (render_template("regi2.html"))
 
 @app.route('/register3')
 def register3():
+    camera.release()
     return (render_template("regi3.html"))
 
 @app.route('/success')

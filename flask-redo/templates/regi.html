@@ -54,20 +54,6 @@
 </form>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js" integrity="sha512-0QbL0ph8Tc8g5bLhfVzSqxe9GERORsKhIn1IrpxDAgUsbBGz/V7iSav2zzW325XGd1OMLdL4UiqRJj702IeqnQ==" crossorigin="anonymous"></script>
-<script>
-  function readURL(input) {
-     if (input.files && input.files[0]) {
-         var reader = new FileReader();
-        saveAs(input.files[0]);
-         reader.onload = function (e) {
-             $('#blah')
-                 .attr('src', e.target.result);
-         };
-
-         reader.readAsDataURL(input.files[0]);
-     }
- }
- </script>
 <script src='register.js'></script>
 </body>
 </html>
