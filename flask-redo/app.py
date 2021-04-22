@@ -569,7 +569,7 @@ def start():
     return render_template("login.html")
 
 
-database = {'Siva': '123', 'abisheck': '123'}
+database = {'002': '123', 'abisheck': '123'}
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -587,6 +587,20 @@ def login():
             session['uid']=str(list(database.keys()).index(name1)+1).zfill(3)
             return redirect("/cam", code=302)
 
+@app.route('/register1_check' , methods=['POST', 'GET'])
+def register1_check():
+    userx = request.form['user']
+    pwd = request.form['pass']
+    cpwd = request.form['cpass']
+    session['username']=userx
+
+    if userx in database:
+        return render_template('regi.html', info='User already has an account')
+    if userx not in database:
+        if cpwd == pwd:
+            return render_template('regi2.html',user=session['username'])
+        else:
+            return render_template('regi.html', info='Password and confirm password does not match')
 
 @app.route('/cam')
 def cam():
@@ -607,7 +621,7 @@ def sign():
     uid = session['uid']
     path = ''
     print(uid)
-    if (session['username'] == 'Siva'):
+    if (session['username'] == '002'):
         path = "C:/Users/Sivasini/Downloads/" + filename
     elif (session['username'] == 'abisheck'):
         path = "/Users/umakathir/Downloads/" + filename
