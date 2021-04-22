@@ -10,47 +10,23 @@
 
 <body>
 <form id="multistepsform">
-    <ul id="progressbar">
-    <li class="active">Account Setup</li>
+<ul id="progressbar">
+    <li>Account Setup</li>
     <li>Face ID setup</li>
-    <li>Upload signature</li>
+    <li class="active">Upload signature</li>
   </ul>
-    <h2 class="fs-title">Create your account</h2>
-    <h3 class="fs-subtitle"></h3>
-    <input type="text" name="email" placeholder="Username" />
-    <input type="password" name="pass" placeholder="Password" />
-    <input type="password" name="cpass" placeholder="Confirm Password" />
-  <a href='/register2'>  <input type="button" name="next" class="next action-button" value="Next" /></a>
-<!--  </fieldset>
-
-  <fieldset id='f1'>
-    <h2 class="fs-title">Captures your face for future authentication</h2>
-    <h3 class="fs-subtitle">Press Capture only after your entire face is visible in the frame.</h3>
-    <div class="camera">
-      <img src="{{ url_for('video_feed') }}" id="video">
-      <form action="/capture" method="POST">
-
-
-    <img src="{{ url_for('video_feed') }}" id="video">
-    <button class="fancy-button bg-gradient1" style="border:none; background: none;align:centre">
-    <span>Capture</span></button>
-    <input type="button" name="previous" class="previous action-button" value="Previous" />
-
-    <input type="button" name="next" class="next action-button" value="Next" />
-  </fieldset>
-  <fieldset id='f2'>
     <h2 class="fs-title">Upload your signature</h2>
     <h3 class="fs-subtitle">Upload your signature</h3>
     <img id="blah" src="http://placehold.it/180" alt="your image" />
     <br>
 
-    <form action="/sign" method="POST">
+  <!--  <form action="/sign" method="POST">-->
       <input type='file' onchange="readURL(this);" name="file"/>
-    <input type="submit" value="PROCEED">
+    <!--<input type="submit" value="PROCEED">-->
     <br>
-    <input type="button" name="previous" class="previous action-button" value="Previous" />
+  <a href='/register2'>  <input type="button" name="previous" class="previous action-button" value="Previous" /></a>
     <input type="submit" name="submit" class="submit action-button" value="Submit" />
-  </fieldset>-->
+
 </form>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js" integrity="sha512-0QbL0ph8Tc8g5bLhfVzSqxe9GERORsKhIn1IrpxDAgUsbBGz/V7iSav2zzW325XGd1OMLdL4UiqRJj702IeqnQ==" crossorigin="anonymous"></script>

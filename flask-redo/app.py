@@ -18,13 +18,14 @@ import pandas as pd
 from time import time
 import keras
 from skimage import io
-from skimage.filters import threshold_otsu   # For finding the threshold for grayscale to binary conversion
+from skimage.filters import threshold_otsu  # For finding the threshold for grayscale to binary conversion
 import tensorflow.compat.v1 as tf
+
 tf.disable_v2_behavior()
 
-
 a = 0
-usern="Unknown"
+usern = "Unknown"
+
 
 # camera = cv2.VideoCapture(0)
 
@@ -131,7 +132,7 @@ def recog():
                             0.75, (0, 255, 0), 2)
             a += 1
             global usern
-            usern= name
+            usern = name
             # return name
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
@@ -140,8 +141,12 @@ def recog():
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     video_capture.release()
+
+
 genuine_image_paths = "Dataset/real/"
 forged_image_paths = "Dataset/forged/"
+
+
 def cap():
     global camera
     camera = cv2.VideoCapture(0)
@@ -149,11 +154,12 @@ def cap():
     ret, buffer = cv2.imencode('.jpg', frame)
     frame = buffer.tobytes()
     yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+           b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
 
 def regImage(un):
-    if not(os.path.exists('Images/'+un)):
-        os.mkdir('Images/'+un)
+    if not (os.path.exists('Images/' + un)):
+        os.mkdir('Images/' + un)
         # with open('users.csv', 'a+') as file:
         #     reader = csv.reader(file)
         #     n = str(len(list(reader))+1).zfill(3)
@@ -161,10 +167,9 @@ def regImage(un):
         #     writer.writerow([n, un])
         for i in range(15):
             return_value, image = camera.read()
-            if i>4:
-                cv2.imwrite('Images/'+un+'/'+un+str(i-4)+'.png', image)
-        del(camera)
-    
+            if i > 4:
+                cv2.imwrite('Images/' + un + '/' + un + str(i - 4) + '.png', image)
+        del (camera)
 
 
 # ## Preprocessing the image
@@ -184,7 +189,7 @@ def greybin(img):
     blur_radius = 0.8
     # to remove small components or noise
     img = ndimage.gaussian_filter(img, blur_radius)
-#     img = ndimage.binary_erosion(img).astype(img.dtype)
+    #     img = ndimage.binary_erosion(img).astype(img.dtype)
     thres = threshold_otsu(img)
     binimg = img > thres
     binimg = np.logical_not(binimg)
@@ -224,9 +229,9 @@ def Ratio(img):
     for row in range(len(img)):
         for col in range(len(img[0])):
             if img[row][col] == True:
-                a = a+1
+                a = a + 1
     total = img.shape[0] * img.shape[1]
-    return a/total
+    return a / total
 
 
 def Centroid(img):
@@ -239,8 +244,8 @@ def Centroid(img):
                 a = np.add(a, b)
                 numOfWhites += 1
     rowcols = np.array([img.shape[0], img.shape[1]])
-    centroid = a/numOfWhites
-    centroid = centroid/rowcols
+    centroid = a / numOfWhites
+    centroid = centroid / rowcols
     return centroid[0], centroid[1]
 
 
@@ -257,26 +262,26 @@ def SkewKurtosis(img):
     xp = np.sum(img, axis=0)
     yp = np.sum(img, axis=1)
     # centroid
-    cx = np.sum(x*xp)/np.sum(xp)
-    cy = np.sum(y*yp)/np.sum(yp)
+    cx = np.sum(x * xp) / np.sum(xp)
+    cy = np.sum(y * yp) / np.sum(yp)
     # standard deviation
-    x2 = (x-cx)**2
-    y2 = (y-cy)**2
-    sx = np.sqrt(np.sum(x2*xp)/np.sum(img))
-    sy = np.sqrt(np.sum(y2*yp)/np.sum(img))
+    x2 = (x - cx) ** 2
+    y2 = (y - cy) ** 2
+    sx = np.sqrt(np.sum(x2 * xp) / np.sum(img))
+    sy = np.sqrt(np.sum(y2 * yp) / np.sum(img))
 
     # skewness
-    x3 = (x-cx)**3
-    y3 = (y-cy)**3
-    skewx = np.sum(xp*x3)/(np.sum(img) * sx**3)
-    skewy = np.sum(yp*y3)/(np.sum(img) * sy**3)
+    x3 = (x - cx) ** 3
+    y3 = (y - cy) ** 3
+    skewx = np.sum(xp * x3) / (np.sum(img) * sx ** 3)
+    skewy = np.sum(yp * y3) / (np.sum(img) * sy ** 3)
 
     # Kurtosis
-    x4 = (x-cx)**4
-    y4 = (y-cy)**4
+    x4 = (x - cx) ** 4
+    y4 = (y - cy) ** 4
     # 3 is subtracted to calculate relative to the normal distribution
-    kurtx = np.sum(xp*x4)/(np.sum(img) * sx**4) - 3
-    kurty = np.sum(yp*y4)/(np.sum(img) * sy**4) - 3
+    kurtx = np.sum(xp * x4) / (np.sum(img) * sx ** 4) - 3
+    kurty = np.sum(yp * y4) / (np.sum(img) * sy ** 4) - 3
 
     return (skewx, skewy), (kurtx, kurty)
 
@@ -306,13 +311,13 @@ def getCSVFeatures(path, img=None, display=False):
 
 
 def makeCSV():
-    if not(os.path.exists('Dataset/Features')):
+    if not (os.path.exists('Dataset/Features')):
         os.mkdir('Dataset/Features')
         print('New folder "Features" created')
-    if not(os.path.exists('Dataset/Features/Training')):
+    if not (os.path.exists('Dataset/Features/Training')):
         os.mkdir('Dataset/Features/Training')
         print('New folder "Features/Training" created')
-    if not(os.path.exists('Dataset/Features/Testing')):
+    if not (os.path.exists('Dataset/Features/Testing')):
         os.mkdir('Dataset/Features/Testing')
         print('New folder "Features/Testing" created')
     # genuine signatures path
@@ -320,37 +325,34 @@ def makeCSV():
     # forged signatures path
     fpath = forged_image_paths
     for person in range(1, 13):
-        per = ('00'+str(person))[-3:]
+        per = ('00' + str(person))[-3:]
         print('Saving features for person id-', per)
 
-        with open('Dataset/Features/Training/training_'+per+'.csv', 'w') as handle:
+        with open('Dataset/Features/Training/training_' + per + '.csv', 'w') as handle:
             handle.write(
                 'ratio,cent_y,cent_x,eccentricity,solidity,skew_x,skew_y,kurt_x,kurt_y,output\n')
             # Training set
             for i in range(0, 3):
-                source = os.path.join(gpath, per+per+'_00'+str(i)+'.png')
+                source = os.path.join(gpath, per + per + '_00' + str(i) + '.png')
                 features = getCSVFeatures(path=source)
-                handle.write(','.join(map(str, features))+',1\n')
+                handle.write(','.join(map(str, features)) + ',1\n')
             for i in range(0, 3):
-                source = os.path.join(fpath, '021'+per+'_00'+str(i)+'.png')
+                source = os.path.join(fpath, '021' + per + '_00' + str(i) + '.png')
                 features = getCSVFeatures(path=source)
-                handle.write(','.join(map(str, features))+',0\n')
+                handle.write(','.join(map(str, features)) + ',0\n')
 
-        with open('Dataset/Features/Testing/testing_'+per+'.csv', 'w') as handle:
+        with open('Dataset/Features/Testing/testing_' + per + '.csv', 'w') as handle:
             handle.write(
                 'ratio,cent_y,cent_x,eccentricity,solidity,skew_x,skew_y,kurt_x,kurt_y,output\n')
             # Testing set
             for i in range(3, 5):
-                source = os.path.join(gpath, per+per+'_00'+str(i)+'.png')
+                source = os.path.join(gpath, per + per + '_00' + str(i) + '.png')
                 features = getCSVFeatures(path=source)
-                handle.write(','.join(map(str, features))+',1\n')
+                handle.write(','.join(map(str, features)) + ',1\n')
             for i in range(3, 5):
-                source = os.path.join(fpath, '021'+per+'_00'+str(i)+'.png')
+                source = os.path.join(fpath, '021' + per + '_00' + str(i) + '.png')
                 features = getCSVFeatures(path=source)
-                handle.write(','.join(map(str, features))+',0\n')
-
-
-
+                handle.write(','.join(map(str, features)) + ',0\n')
 
 
 # # TF Model
@@ -358,15 +360,12 @@ def makeCSV():
 
 def testing(path):
     feature = getCSVFeatures(path)
-    if not(os.path.exists('Dataset/TestFeatures')):
+    if not (os.path.exists('Dataset/TestFeatures')):
         os.mkdir('Dataset/TestFeatures')
     with open('Dataset/TestFeatures/testcsv.csv', 'w') as handle:
         handle.write(
             'ratio,cent_y,cent_x,eccentricity,solidity,skew_x,skew_y,kurt_x,kurt_y\n')
-        handle.write(','.join(map(str, feature))+'\n')
-
-
-
+        handle.write(','.join(map(str, feature)) + '\n')
 
 
 def readCSV(train_path, test_path, type2=False):
@@ -379,24 +378,21 @@ def readCSV(train_path, test_path, type2=False):
     temp = [elem[0] for elem in df.values]
     correct = np.array(temp)
     corr_train = keras.utils.to_categorical(
-        correct, 2)      # Converting to one hot
+        correct, 2)  # Converting to one hot
     # Reading test data
     df = pd.read_csv(test_path, usecols=range(n_input))
     test_input = np.array(df.values)
     test_input = test_input.astype(np.float32, copy=False)
-    if not(type2):
+    if not (type2):
         df = pd.read_csv(test_path, usecols=(n_input,))
         temp = [elem[0] for elem in df.values]
         correct = np.array(temp)
         corr_test = keras.utils.to_categorical(
-            correct, 2)      # Converting to one hot
-    if not(type2):
+            correct, 2)  # Converting to one hot
+    if not (type2):
         return train_input, corr_train, test_input, corr_test
     else:
         return train_input, corr_train, test_input
-
-
-
 
 
 # Create model
@@ -408,10 +404,8 @@ def multilayer_perceptron(x):
     return out_layer
 
 
-
-
 def evaluate(train_path, test_path, type2=False):
-    if not(type2):
+    if not (type2):
         train_input, corr_train, test_input, corr_test = readCSV(
             train_path, test_path)
     else:
@@ -424,18 +418,18 @@ def evaluate(train_path, test_path, type2=False):
         for epoch in range(training_epochs):
             # Run optimization op (backprop) and cost op (to get loss value)
             _, cost = sess.run([train_op, loss_op], feed_dict={
-                               X: train_input, Y: corr_train})
+                X: train_input, Y: corr_train})
             if cost < 0.0001:
                 break
-#             # Display logs per epoch step
-#             if epoch % 999 == 0:
-#                 print("Epoch:", '%04d' % (epoch+1), "cost={:.9f}".format(cost))
-#         print("Optimization Finished!")
+        #             # Display logs per epoch step
+        #             if epoch % 999 == 0:
+        #                 print("Epoch:", '%04d' % (epoch+1), "cost={:.9f}".format(cost))
+        #         print("Optimization Finished!")
 
         # Finding accuracies
         accuracy1 = accuracy.eval({X: train_input, Y: corr_train})
-#         print("Accuracy for train:", accuracy1)
-#         print("Accuracy for test:", accuracy2)
+        #         print("Accuracy for train:", accuracy1)
+        #         print("Accuracy for test:", accuracy2)
         if type2 is False:
             accuracy2 = accuracy.eval({X: test_input, Y: corr_test})
             return accuracy1, accuracy2
@@ -444,11 +438,11 @@ def evaluate(train_path, test_path, type2=False):
             print(prediction)
             if prediction[0][1] > prediction[0][0]:
                 print('Genuine Image')
-                ver=True
+                ver = True
                 return True
             else:
                 print('Forged Image')
-                ver=False
+                ver = False
                 return False
 
 
@@ -467,23 +461,26 @@ def trainAndTest(rate=0.001, epochs=1700, neurons=7, display=False):
 
     train_avg, test_avg = 0, 0
     n = 10
-    for i in range(1, n+1):
+    for i in range(1, n + 1):
         if display:
             print("Running for Person id", i)
-        temp = ('0'+str(i))[-2:]
+        temp = ('0' + str(i))[-2:]
         train_score, test_score = evaluate(train_path.replace(
             '01', temp), test_path.replace('01', temp))
         train_avg += train_score
         test_avg += test_score
     if display:
         #         print("Number of neurons in Hidden layer-", n_hidden_1)
-        print("Training average-", train_avg/n)
-        print("Testing average-", test_avg/n)
-        print("Time taken-", time()-start)
-    return train_avg/n, test_avg/n, (time()-start)/n
+        print("Training average-", train_avg / n)
+        print("Testing average-", test_avg / n)
+        print("Time taken-", time() - start)
+    return train_avg / n, test_avg / n, (time() - start) / n
+
+
 makeCSV()
 
-def signrecog(uid,filename):
+
+def signrecog(uid, filename):
     global n_input
     n_input = 9
     global train_person_id
@@ -492,7 +489,7 @@ def signrecog(uid,filename):
     test_image_path = filename
     global train_path
     train_path = 'Dataset/Features/Training/training_' + \
-        train_person_id+'.csv'
+                 train_person_id + '.csv'
     testing(test_image_path)
     global test_path
     test_path = 'Dataset/TestFeatures/testcsv.csv'
@@ -559,6 +556,7 @@ def signrecog(uid,filename):
     init = tf.global_variables_initializer()
     return evaluate(train_path, test_path, type2=True)
 
+
 encode()
 app = Flask(__name__)
 app.secret_key = 'Examination Portal'
@@ -603,19 +601,21 @@ def capture():
     print(usern)
     print(session['username'])
 
+
 @app.route('/sign', methods=['POST', 'GET'])
 def sign():
     filename = request.form['file']
     uid = request.form['uid']
-    path=''
-    if(session['username']=='Siva'):
-        path="C:/Users/Sivasini/Downloads/"+filename
-    elif (session['username']=='abisheck'):
-        path="/Users/umakathir/Downloads/"+filename
-    if signrecog(uid,path):
+    path = ''
+    if (session['username'] == 'Siva'):
+        path = "C:/Users/Sivasini/Downloads/" + filename
+    elif (session['username'] == 'abisheck'):
+        path = "/Users/umakathir/Downloads/" + filename
+    if signrecog(uid, path):
         return redirect("/exam", code=302)
-    else :
+    else:
         return redirect("/error", code=302)
+
 
 @app.route('/upload')
 def upload():
@@ -631,28 +631,45 @@ def exam():
 def video_feed():
     return Response(recog(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
 @app.route('/register_video_feed')
 def register_video_feed():
     return Response(cap(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/register')
-def register():
+
+@app.route('/register1')
+def register1():
     return (render_template("regi.html"))
+
+@app.route('/register2')
+def register2():
+    return (render_template("regi2.html"))
+
+@app.route('/register3')
+def register3():
+    return (render_template("regi3.html"))
+
+@app.route('/success')
+def success():
+    return (render_template("success.html"))
 
 @app.route('/logout')
 def logout():
     global usern
-    usern="Unknown"
+    usern = "Unknown"
     session.pop('username', None)
     return (render_template("login.html"))
+
 
 @app.route('/error')
 def error():
     return (render_template("error.html"))
 
+
 @app.errorhandler(500)
 def internal_error(error):
     return redirect("/error", code=302)
+
 
 if __name__ == '_main_':
     app.run()
