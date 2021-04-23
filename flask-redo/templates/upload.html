@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Upload</title>
+  <link rel="stylesheet" type="text/css" href="login.css"/>
+
+  	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='upload.css')}}"/>
+
+</head>
+<body>
+  <section>
+<div class="login-img">
+       <h1>To enter the examination portal, upload your signature.</h1><br><p> Please follow the instructions below:</p>
+      <ol><li>Click the upload button and select the signature that was used for registering into the portal.</li>
+      <li>Upon uploading, click proceed to start your exam.</li>
+      <li>Be aware that this software detects forged signatures.</li></ol>
+      <br>
+      <p>If it still doesnt recognize your signature, your session will be cancelled and you will be redirected to the login page.</p>
+      </div>
+
+<div class="login-form">
+  <img id="blah" src="http://placehold.it/180" alt="your image" />
+  <br>
+
+  <form action="/sign" enctype=multipart/form-data method="POST">
+      <!-- <input type="text" name="uid" value="" placeholder="Username"><br> -->
+    <input type='file' onchange="readURL(this);" name="file"/>
+  <!--<input type="submit" value="PROCEED">-->
+  <br>
+  <button class="fancy-button bg-gradient1" style="border:none; background: none;align:centre">
+  <span>Proceed</span></button>
+
+</form>
+
+</div>
+  <script>
+    function readURL(input) {
+       if (input.files && input.files[0]) {
+           var reader = new FileReader();
+           reader.onload = function (e) {
+               $('#blah')
+                   .attr('src', e.target.result);
+           };
+
+           reader.readAsDataURL(input.files[0]);
+       }
+   }
+   </script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  </section>
+</body>
+</html>

@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
+
+html {
+    box-sizing: border-box;
+    font: 62.5% "Open Sans", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+body {
+    color: #353b48;
+    font-size: 1.6rem;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h3, p {
+    margin: 0;
+}
+
+/* login */
+
+section {
+    display: flex;
+}
+
+.login-img {
+    display: none;
+}
+
+.login-form {
+    height: 100vh;
+    max-width: 80%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+img{
+  max-width:300px;
+}
+input{
+  padding: 10px;
+margin-left: 5vw;
+}
+
+
+/* media queries */
+@media screen and (min-width:990px) {
+    .login-img,
+    .login-form {
+        padding: 4%;
+    }
+
+    .login-img {
+        background: linear-gradient(to bottom, rgba(229, 236, 84, 0.8), rgba(36, 11, 54, 0.8)),
+        url(https://www.pandasecurity.com/en/mediacenter/src/uploads/2016/10/IMG-MC-FirmaDigital-1.jpg);
+        background-position: center;
+        background-size: cover;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .login-img h1,
+    .login-img p,
+	.login-img ol{
+        width: 300px;
+    }
+
+    .login-img h1 {
+        color: #fff;
+        font-size: 2.5rem;
+    }
+
+    .login-img p,
+	.login-img ol{
+        color: #F3F9F7;
+        line-height: 1.5;
+		font-size:1.9rem;
+    }
+}
+
+
+
+#video {
+  border: 1px solid black;
+  box-shadow: 2px 2px 3px black;
+  width:900px;
+  height:690px;
+  display:flex;
+
+
+}
+
+.camera {
+    display:flex;
+  flex-wrap:wrap;
+  width:900px;
+  height:695px;
+}
+
+
+.fancy-button {
+	 font-family: 'Heebo', Helvetica, Arial, sans-serif;
+	 font-weight: 600;
+	 font-size: 1.4rem;
+	 letter-spacing: 0.07em;
+	 color: #fff;
+	 position: relative;
+   cursor:pointer;
+     display:block;
+  position:relative;
+  top:90px;
+margin-left:7vw;
+}
+ .fancy-button.bg-gradient1 {
+	 text-shadow: 0px 0px 1px #bf4c28;
+}
+
+}
+ .fancy-button:before {
+	 content: '';
+	 display: inline-block;
+	 height: 50px;
+	 position: absolute;
+	 bottom: -1px;
+	 left: 10px;
+	 right: 10px;
+	 z-index: -1;
+	 border-radius: 2em;
+	 filter: blur(14px) brightness(0.9);
+	 transform-style: preserve-3d;
+	 transition: all 0.3s ease-out;
+}
+
+ .fancy-button span {
+	 display: inline-block;
+	 padding: 16px 20px;
+	 border-radius: 50em;
+	 position: relative;
+	 z-index: 2;
+	 will-change: transform, filter;
+	 transform-style: preserve-3d;
+	 transition: all 0.3s ease-out;
+}
+ .fancy-button:focus {
+	 color: #fff;
+}
+ .fancy-button:hover {
+	 color: #fff;
+}
+ .fancy-button:hover span {
+	 filter: brightness(0.9) contrast(1.2);
+	 transform: scale(0.96);
+}
+ .fancy-button:hover:before {
+	 bottom: 3px;
+	 filter: blur(6px) brightness(0.8);
+}
+ .fancy-button:active span {
+	 filter: brightness(0.75) contrast(1.7);
+}
+
+.bg-gradient1 span, .bg-gradient1:before {
+	 background: #fa7e29;
+	 background: linear-gradient(180deg, #B7BC54 0%, rgba(15, 155,110, 0.81) 100%);
+}

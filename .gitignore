@@ -4,7 +4,12 @@
 *.csv
 face_enc
 !users.csv
-Images/abisheck/*
+Images/Abisheck/*
 app-Copy1.ipynb
 app_mine.ipynb
 .ipynb_checkpoints/app_mine-checkpoint.ipynb
+flask-redo/Images/abisheck/*
+Flask/.vscode/settings.json
+flask-redo/__pycache__/app.cpython-38.pyc
+flask-redo/__pycache__/app.cpython-38.pyc
+flask-redo/a.py

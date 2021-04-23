@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+	<title>Webcam</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='cam.css')}}"/>
+</head>
+<body>
+<div class="contentarea">
+  <div class="camera">
+    <img src="{{ url_for('video_feed') }}" id="video"></video>
+    <form action="/capture" method="POST">
+        <button id="startbutton" type="submit" >Capture</button>
+    </form>
+  </div>
+  <canvas id="canvas">
+   
+    
+  </canvas>
+
+</div>
+</body>
+</html>
