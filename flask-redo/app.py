@@ -164,11 +164,11 @@ def regImage(un):
         #     n = str(len(list(reader))+1).zfill(3)
         #     writer = csv.writer(file)
         #     writer.writerow([n, un])
+        cam=cv2.VideoCapture(0)
         for i in range(15):
-            return_value, image = camera.read()
+            return_value, image = cam.read()
             if i > 4:
                 cv2.imwrite('Images/' + un + '/' + un + str(i - 4) + '.png', image)
-        del (camera)
 
 
 # ## Preprocessing the image
@@ -323,35 +323,40 @@ def makeCSV():
     gpath = genuine_image_paths
     # forged signatures path
     fpath = forged_image_paths
-    for person in range(1, 13):
-        per = ('00' + str(person))[-3:]
-        print('Saving features for person id-', per)
-
-        with open('Dataset/Features/Training/training_' + per + '.csv', 'w') as handle:
-            handle.write(
-                'ratio,cent_y,cent_x,eccentricity,solidity,skew_x,skew_y,kurt_x,kurt_y,output\n')
-            # Training set
-            for i in range(0, 3):
-                source = os.path.join(gpath, per + per + '_00' + str(i) + '.png')
-                features = getCSVFeatures(path=source)
-                handle.write(','.join(map(str, features)) + ',1\n')
-            for i in range(0, 3):
-                source = os.path.join(fpath, '021' + per + '_00' + str(i) + '.png')
-                features = getCSVFeatures(path=source)
-                handle.write(','.join(map(str, features)) + ',0\n')
-
-        with open('Dataset/Features/Testing/testing_' + per + '.csv', 'w') as handle:
-            handle.write(
-                'ratio,cent_y,cent_x,eccentricity,solidity,skew_x,skew_y,kurt_x,kurt_y,output\n')
-            # Testing set
-            for i in range(3, 5):
-                source = os.path.join(gpath, per + per + '_00' + str(i) + '.png')
-                features = getCSVFeatures(path=source)
-                handle.write(','.join(map(str, features)) + ',1\n')
-            for i in range(3, 5):
-                source = os.path.join(fpath, '021' + per + '_00' + str(i) + '.png')
-                features = getCSVFeatures(path=source)
-                handle.write(','.join(map(str, features)) + ',0\n')
+    n=0
+    with open('users.csv', 'r+') as file:
+        reader = csv.reader(file)
+        n = len(list(reader))-1
+        print(str(n)+'users')
+        for person in range(1, n+1):
+            per = ('00' + str(person))[-3:]
+            print('Saving features for person id-', per)
+            if not(os.path.exists('Dataset/Features/Training/training_' + per + '.csv')):
+                with open('Dataset/Features/Training/training_' + per + '.csv', 'w') as handle:
+                    handle.write(
+                        'ratio,cent_y,cent_x,eccentricity,solidity,skew_x,skew_y,kurt_x,kurt_y,output\n')
+                    # Training set
+                    for i in range(0, 3):
+                        source = os.path.join(gpath, per + per + '_00' + str(i) + '.png')
+                        features = getCSVFeatures(path=source)
+                        handle.write(','.join(map(str, features)) + ',1\n')
+                    for i in range(0, 3):
+                        source = os.path.join(fpath, '021' + per + '_00' + str(i) + '.png')
+                        features = getCSVFeatures(path=source)
+                        handle.write(','.join(map(str, features)) + ',0\n')
+            if not(os.path.exists('Dataset/Features/Testing/testing_' + per + '.csv')):
+                with open('Dataset/Features/Testing/testing_' + per + '.csv', 'w') as handle:
+                    handle.write(
+                        'ratio,cent_y,cent_x,eccentricity,solidity,skew_x,skew_y,kurt_x,kurt_y,output\n')
+                    # Testing set
+                    for i in range(3, 5):
+                        source = os.path.join(gpath, per + per + '_00' + str(i) + '.png')
+                        features = getCSVFeatures(path=source)
+                        handle.write(','.join(map(str, features)) + ',1\n')
+                    for i in range(3, 5):
+                        source = os.path.join(fpath, '021' + per + '_00' + str(i) + '.png')
+                        features = getCSVFeatures(path=source)
+                        handle.write(','.join(map(str, features)) + ',0\n')
 
 
 # # TF Model
@@ -630,8 +635,9 @@ def upload():
 def exam():
     return (render_template("exam.html", user=session['username']))
 
-@app.route('/reg_image')
+@app.route('/reg_image', methods=['POST', 'GET'])
 def reg_image():
+    camera.release()
     uname=session['username']
     regImage(uname)
     return redirect("/register3", code=302)
@@ -659,6 +665,7 @@ def register2():
         with open('users.csv', 'r+') as file:
             reader = csv.reader(file)
             n = str(len(list(reader))).zfill(3)
+            session['uid']=session['uid']
             writer = csv.writer(file)
             writer.writerow([n, session['username'],session['password']])
         global camera
@@ -669,8 +676,23 @@ def register2():
 
 @app.route('/register3')
 def register3():
-    camera.release()
     return (render_template("regi3.html"))
+
+@app.route('/get_sign', methods=['POST', 'GET'])
+def get_sign():
+    if request.method == 'POST':  
+        files = request.files.getlist('files[]')
+        # if len(files)!=5:
+        #     return redirect("/register3", code=302)
+        print(len(files))
+        uid='001'
+        for i in range(0,5):
+            source = os.path.join(genuine_image_paths, uid + uid + '_00' + str(i) + '.png')
+            files[i].save(source)
+    print('saved')
+    makeCSV()
+    encode()
+    return redirect("/logout", code=302)
 
 @app.route('/success')
 def success():

@@ -4,7 +4,7 @@
 *.csv
 face_enc
 !users.csv
-Images/abisheck/*
+Images/Abisheck/*
 app-Copy1.ipynb
 app_mine.ipynb
 .ipynb_checkpoints/app_mine-checkpoint.ipynb

@@ -9,7 +9,7 @@
   </head>
 
 <body>
-<form id="multistepsform">
+<form id="multistepsform" action="/reg_image" method="POST">
     <ul id="progressbar">
     <li>Account Setup</li>
     <li  class="active">Face ID setup</li>
@@ -24,15 +24,13 @@
 
 
     
-    <div class="login-form">
       <img src="{{ url_for('register_video_feed') }}" id="video">
-<form action="/reg_image" method="POST">
-<button class="fancy-button bg-gradient1" style="border:none; background: none;align:centre">
-<span>Capture</span></button>
 
-
-</form>
-  </div>
+        <!-- <button id="startbutton" type="submit" >Capture</button>-->
+     <button class="fancy-button bg-gradient1" style="border:none; background: none;align:centre">
+     <span>Capture</span></button>
+ 
+ 
 
   <a href='/register1'>  <input type="button" name="previous" class="previous action-button" value="Previous" /></a>
 
