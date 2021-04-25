@@ -132,3 +132,41 @@ h1{
 	 background: #ff9a76;
 	 color: white;
 }
+
+#message {
+  display:none;
+  background:none;
+  color: #000;
+  position: relative;
+  padding: 10px;
+  margin-top: 5px;
+  font-size: 0.9rem;
+  text-align:left;
+}
+
+#message p {
+  padding: 7px 35px;
+}
+
+
+.valid {
+  color: green;
+}
+
+.valid:before {
+  position: relative;
+  left: -30px;
+  content: "✔";
+}
+
+
+.invalid {
+  color: red;
+}
+
+.invalid:before {
+  position: relative;
+  left: -30px;
+  content: "✖";
+}
+

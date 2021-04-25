@@ -5,6 +5,7 @@
     	<title>Register</title>
     	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
       <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='register.css')}}"/>
   </head>
 
@@ -17,15 +18,27 @@
   </ul>
     <h2 class="fs-title">Create your account</h2>
     <h3 class="fs-subtitle"></h3>
-    <input type="text" name="uname" placeholder="Username" />
-    <input type="password" name="pass" placeholder="Password" />
-    <input type="password" name="cpass" placeholder="Confirm Password" />
+    <input type="text" name="uname" placeholder="Username" required/>
+    <input type="password" name="pass" id="psw" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required/>
+    <input type="password" name="cpass" placeholder="Confirm Password" required />
 <br>
     <h1>{{ info }}</h1><br>
-  <input type="submit" name="next" class="next action-button" value="Next" />
-</form>
+
+  <input type="submit" name="next" class="next action-button" value="Next" /><br><br>
+    <a href='/' style="color:#679b9b;"><i class="fa fa-arrow-left" ></i> Back to login</a>
+        <div id="message">
+  <h3>Password must contain the following:</h3>
+  <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+  <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+  <p id="number" class="invalid">A <b>number</b></p>
+  <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+</div>
+
+    </form>
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js" integrity="sha512-0QbL0ph8Tc8g5bLhfVzSqxe9GERORsKhIn1IrpxDAgUsbBGz/V7iSav2zzW325XGd1OMLdL4UiqRJj702IeqnQ==" crossorigin="anonymous"></script>
-<script src='register.js'></script>
+<script src="{{url_for('static',filename='change.js')}}"></script>
 </body>
 </html>

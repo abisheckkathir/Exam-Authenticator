@@ -4,6 +4,8 @@ import face_recognition
 import pickle
 import cv2
 import os
+import shutil
+import pandas as pd
 import csv
 import numpy as np
 import os
@@ -546,7 +548,13 @@ def signrecog(uid, filename):
     init = tf.global_variables_initializer()
     return evaluate(train_path, test_path, type2=True)
 
-
+def register_validation(user):
+    with open('users.csv', 'r+') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            if row[1] == user:
+                return 1
+    return 0
 
 app = Flask(__name__)
 app.secret_key = 'Examination Portal'
@@ -560,7 +568,7 @@ def start():
     return render_template("login.html")
 
 
-database = {'002': '123', 'abisheck': '123'}
+#database = {'002': '123', 'abisheck': '123'}
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -581,8 +589,8 @@ def login():
                     session['uid']=row[0]
                     return redirect("/cam", code=302)
                 else:
-                    return render_template('login.html', info='Invalid Password')
-    return render_template('login.html', info='Invalid User')
+                    return render_template('login.html', info='Invalid username or password')
+    return render_template('login.html', info='Invalid username or password')
 
 @app.route('/cam')
 def cam():
@@ -601,10 +609,10 @@ def capture():
 def sign():
     if request.method == 'POST':  
         f = request.files['file']
-        f.save(os.path.join('Im/temp.png'))
+        f.save(os.path.join('Images/temp.png'))
     print('saved')
     uid = session['uid']
-    path =os.path.join('Im/temp.png')
+    path =os.path.join('Images/temp.png')
     if signrecog(uid, path):
         os.remove(path)
         return redirect("/exam", code=302)
@@ -648,28 +656,32 @@ def register2():
         global session
         session['username']=request.form['uname']
         session['password']=request.form['pass']
-        with open('users.csv', 'r+') as file:
+        flag=register_validation(session['username'])
+        if flag == 1:
+            return (render_template("regi.html", info='Username is not available'))
+        with open('users.csv', 'r+',newline='') as file:
             reader = csv.reader(file)
             n = str(len(list(reader))).zfill(3)
             session['uid']=n
-            writer = csv.writer(file)
+            writer = csv.writer(file,delimiter=',',lineterminator='\n')
             writer.writerow([n, session['username'],session['password']])
         global camera
         camera = cv2.VideoCapture(0)
         return (render_template("regi2.html"))
     else:
-        return redirect("/register1", code=302)
+        return (render_template("regi.html",info='Passwords do not match'))
 
 @app.route('/register3')
 def register3():
     return (render_template("regi3.html"))
 
+
 @app.route('/get_sign', methods=['POST', 'GET'])
 def get_sign():
-    if request.method == 'POST':  
+    if request.method == 'POST':
         files = request.files.getlist('files[]')
-        
-        
+
+
         print(len(files))
         uid=session['uid']
         for i in range(0,5):
@@ -678,7 +690,37 @@ def get_sign():
     print('saved')
     makeCSV()
     encode()
-    return redirect("/logout", code=302)
+    return redirect("/success", code=302)
+
+'''
+@app.route('/get_sign', methods=['POST', 'GET'])
+def get_sign():
+    if request.method == 'POST':
+        if request.form['submit']=='Submit':
+            files = request.files.getlist('files[]')
+            print(len(files))
+            uid=session['uid']
+            for i in range(0,5):
+                source = os.path.join(genuine_image_paths, uid + uid + '_00' + str(i) + '.png')
+                files[i].save(source)
+            print('saved')
+            makeCSV()
+            encode()
+            return redirect("/success", code=302)
+        elif request.form['submit'] == 'Reset':
+            f = open("users.csv", "r+")
+            lines = f.readlines()
+            lines = lines[:-1]
+            writer = csv.writer(f, delimiter=',')
+            for line in lines:
+                writer.writerow(line)
+            user=session['username']
+            directory = user
+            parent= "Images/"
+            path=os.path.join(parent, directory)
+            shutil.rmtree(path, ignore_errors=True)
+            return redirect("/register1", code=302)
+'''
 
 @app.route('/success')
 def success():
@@ -693,16 +735,13 @@ def logout():
     session.pop('password', None)
     return (render_template("login.html"))
 
-
 @app.route('/error')
 def error():
     return (render_template("error.html"))
 
-
 @app.errorhandler(500)
 def internal_error(error):
     return redirect("/error", code=302)
- 
 
 if __name__ == '_main_':
     app.run(debug=True)
