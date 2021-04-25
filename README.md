@@ -8,10 +8,12 @@ The examination portal is used to authenticate students by using the following b
 1. Face - Physiological trait
 2. Signature - Behavioural trait
 
+![Flow](../master/Im/Flow.png)
+
 * Facial recognition carries on 1:N identification where it compares the given template against all other templates already available in the database.
 * Signature verification carries on 1:1 verification where it compares the given template by the user against the template of the given user with the help of the User ID.
 
-<img src="https://i.pinimg.com/originals/aa/2f/f3/aa2ff34a12fde12ee717a4e8ebd6571d.jpg" width="500">
+<img src="https://i.pinimg.com/originals/aa/2f/f3/aa2ff34a12fde12ee717a4e8ebd6571d.jpg" width="500" align='center'>
 
 The portal also provides the option to register. Upon registering, the user's templated will be successfully encoded and saved in the database.
 
