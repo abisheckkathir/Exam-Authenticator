@@ -1,6 +1,19 @@
 <h1 align="center">Exam Authenticator</h1>
 
-One Paragraph of project description
+## About the project
+In the world of identity theft and ever evolving crimes, the issue of security is very paramount in any organization.
+
+Biometrics is one such domain of Computer Science, which provides solution in terms of security through interpretation of human characteristics such as physical traits and behaviors to make it more reliable since these traits are unique for everyone. Hence, we intend to provide a secure validation through means of visual and behavioral biometrics such as facial recognition and signatures respectively.
+The examination portal is used to authenticate students by using the following biometric traits:
+1. Face - Physiological trait
+2. Signature - Behavioural trait
+
+* Facial recognition carries on 1:N identification where it compares the given template against all other templates already available in the database.
+* Signature verification carries on 1:1 verification where it compares the given template by the user against the template of the given user with the help of the User ID.
+
+[Verification vs Identification]("https://i.pinimg.com/originals/aa/2f/f3/aa2ff34a12fde12ee717a4e8ebd6571d.jpg")
+
+The portal also provides the option to register. Upon registering, the user's templated will be successfully encoded and saved in the database.
 
 ## Getting Started
 
@@ -61,3 +74,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Acknowledgments
 
 * Made this as a part of the Biometrics course in junior year
+
+## References
+* For face recognition - [https://www.mygreatlearning.com/blog/face-recognition/](https://www.mygreatlearning.com/blog/face-recognition/)
+* For signature recognition -[https://github.com/Harshitb1/AxisBankAiChallenge](https://github.com/Harshitb1/AxisBankAiChallenge)
