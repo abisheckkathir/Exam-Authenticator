@@ -659,12 +659,6 @@ def register2():
         flag=register_validation(session['username'])
         if flag == 1:
             return (render_template("regi.html", info='Username is not available'))
-        with open('users.csv', 'r+',newline='') as file:
-            reader = csv.reader(file)
-            n = str(len(list(reader))).zfill(3)
-            session['uid']=n
-            writer = csv.writer(file,delimiter=',',lineterminator='\n')
-            writer.writerow([n, session['username'],session['password']])
         global camera
         camera = cv2.VideoCapture(0)
         return (render_template("regi2.html"))
@@ -680,8 +674,12 @@ def register3():
 def get_sign():
     if request.method == 'POST':
         files = request.files.getlist('files[]')
-
-
+        with open('users.csv', 'r+',newline='') as file:
+            reader = csv.reader(file)
+            n = str(len(list(reader))).zfill(3)
+            session['uid']=n
+            writer = csv.writer(file,delimiter=',',lineterminator='\n')
+            writer.writerow([n, session['username'],session['password']])
         print(len(files))
         uid=session['uid']
         for i in range(0,5):
