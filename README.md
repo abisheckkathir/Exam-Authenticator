@@ -42,7 +42,7 @@ conda env create -f environment.yml
 And activate
 
 ```
-conda activate bio
+conda activate examauth
 ```
 
 You are ready to run the Web App now...
